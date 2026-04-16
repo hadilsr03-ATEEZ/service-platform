@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 896px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 8px;
+        }
+
+        .back-button:hover {
+            color: #111827;
+        }
+
+        .arrow-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .main-title {
+            font-size: 30px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-save {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-save:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #111827;
+        }
+
+        .label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        /* Images Layout */
+        .image-container-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+
+        .cover-image-container {
+            width: 192px;
+            height: 192px;
+            background-color: #e5e7eb;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .cover-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-image-container {
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 12px;
+            text-align: center;
+            padding: 8px;
+        }
+
+        /* Form Inputs */
+        .input, .select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input:focus, .select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #ffffff;
+            min-height: 96px;
+            resize: vertical;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .textarea.large {
+            min-height: 128px;
+        }
+
+        .textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-outline {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+
+        .btn-outline:hover {
+            background-color: #f9fafb;
+        }
+
+        .btn-danger {
+            color: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .btn-danger:hover {
+            background-color: #fef2f2;
+        }
+
+        .btn-delete {
+            background-color: #dc2626;
+            color: #ffffff;
+        }
+
+        .btn-delete:hover {
+            background-color: #b91c1c;
+        }
+
+        .btn-success {
+            background-color: #16a34a;
+            color: #ffffff;
+        }
+
+        .btn-success:hover {
+            background-color: #15803d;
+        }
+
+        /* Diplômes Grid */
+        .diplomes-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .diplome-item {
+            position: relative;
+            aspect-ratio: 1;
+        }
+
+        .diplome-image-container {
+            width: 100%;
+            height: 100%;
+            background-color: #f3f4f6;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .diplome-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .diplome-remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+            transition: background-color 0.2s;
+        }
+
+        .diplome-remove-btn:hover {
+            background-color: #b91c1c;
+        }
+
+        .add-diplome-btn {
+            aspect-ratio: 1;
+            background-color: #fafafa;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .add-diplome-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        .add-diplome-btn .plus-icon {
+            font-size: 36px;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+
+        .add-diplome-btn .add-text {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        /* Réalisations */
+        .realisation-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .realisation-content {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .realisation-image-container {
+            width: 128px;
+            height: 128px;
+            background-color: #f3f4f6;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 12px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            overflow: hidden;
+            text-align: center;
+            padding: 8px;
+        }
+
+        .realisation-image-container:hover {
+            border-color: #3b82f6;
+        }
+
+        .realisation-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .realisation-fields {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 20px;
+        }
+
+        .add-realisation-btn {
+            width: 100%;
+            padding: 16px;
+            background-color: #fafafa;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .add-realisation-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        .plus-icon {
+            font-size: 24px;
+            color: #9ca3af;
+        }
+
+        .add-text {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Delete Section */
+        .delete-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 32px;
+            margin-top: 32px;
+        }
+
+        .delete-title {
+            color: #dc2626;
+        }
+
+        .delete-warning {
+            color: #6b7280;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.2s;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            animation: slideUp 0.3s;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #111827;
+        }
+
+        .success-title {
+            color: #16a34a;
+        }
+
+        .modal-description {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .main-title {
+                font-size: 24px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .image-container-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .image-buttons {
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .diplomes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .realisation-content {
+                flex-direction: column;
+            }
+
+            .realisation-image-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <button class="back-button" onclick="goBack()">
+                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <h1 class="main-title">Mon Profil</h1>
+            </div>
+            <button class="btn btn-save" onclick="saveChanges()">Enregistrer</button>
+        </div>
+
+        <!-- Image de couverture -->
+        <div class="section">
+            <label class="label">Image de couverture</label>
+            <div class="image-container-wrapper">
+                <div class="cover-image-container">
+                    <img id="coverImg" src="src/imports/image-0.png" alt="Couverture" class="cover-image">
+                </div>
+                <div class="image-buttons">
+                    <button class="btn btn-outline" onclick="changeCoverImage()">Change image</button>
+                    <button class="btn btn-outline btn-danger" onclick="removeCoverImage()">Remove image</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo de profil -->
+        <div class="section">
+            <label class="label">Photo de profil</label>
+            <div class="image-container-wrapper">
+                <div class="profile-image-container">
+                    <img id="profileImg" src="src/imports/image-0.png" alt="Profil" class="profile-image">
+                </div>
+                <div class="image-buttons">
+                    <button class="btn btn-outline" onclick="changeProfileImage()">Change image</button>
+                    <button class="btn btn-outline btn-danger" onclick="removeProfileImage()">Remove image</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informations de base -->
+        <div class="section">
+            <div class="form-group">
+                <label class="label" for="nomCommercial">Nom commercial</label>
+                <input type="text" id="nomCommercial" class="input" placeholder="Entrez votre nom commercial">
+            </div>
+            <div class="form-group">
+                <label class="label" for="deuxiemeNom">2ème nom</label>
+                <input type="text" id="deuxiemeNom" class="input" placeholder="Entrez votre 2ème nom">
+            </div>
+        </div>
+
+        <!-- Account Security -->
+        <div class="section">
+            <h2 class="section-title">Account Security</h2>
+            <div class="form-group">
+                <label class="label" for="email">Email</label>
+                <input type="email" id="email" class="input" placeholder="votre@email.com">
+            </div>
+            <div class="form-group">
+                <label class="label" for="password">Password</label>
+                <input type="password" id="password" class="input" placeholder="••••••••">
+            </div>
+        </div>
+
+        <!-- Mes informations -->
+        <div class="section">
+            <h2 class="section-title">Mes informations</h2>
+            <div class="form-group">
+                <label class="label" for="bio">Bio</label>
+                <textarea id="bio" class="textarea" placeholder="Parlez-nous de vous (courte présentation)..."></textarea>
+            </div>
+            <div class="form-group">
+                <label class="label" for="bioDetaillee">Bio détaillée</label>
+                <textarea id="bioDetaillee" class="textarea large" placeholder="Décrivez en détail votre parcours, vos compétences..."></textarea>
+            </div>
+
+            <!-- Diplômes et certifications -->
+            <div class="form-group">
+                <label class="label">Diplômes et certifications (si disponible)</label>
+                <div class="diplomes-grid" id="diplomesGrid">
+                    <button class="add-diplome-btn" onclick="addDiplome()">
+                        <span class="plus-icon">+</span>
+                        <span class="add-text">Ajouter diplôme</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="categoriePrincipal">Catégorie principal</label>
+                <select id="categoriePrincipal" class="select">
+                    <option value="">Sélectionnez une catégorie</option>
+                    <option value="Plomberie">Plomberie</option>
+                    <option value="Électricité">Électricité</option>
+                    <option value="Menuiserie">Menuiserie</option>
+                    <option value="Peinture">Peinture</option>
+                    <option value="Maçonnerie">Maçonnerie</option>
+                    <option value="Jardinage">Jardinage</option>
+                    <option value="Climatisation">Climatisation</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="label" for="ville">Ville</label>
+                <select id="ville" class="select">
+                    <option value="">Sélectionnez une ville</option>
+                    <option value="Paris">Paris</option>
+                    <option value="Lyon">Lyon</option>
+                    <option value="Marseille">Marseille</option>
+                    <option value="Toulouse">Toulouse</option>
+                    <option value="Nice">Nice</option>
+                    <option value="Nantes">Nantes</option>
+                    <option value="Bordeaux">Bordeaux</option>
+                    <option value="Lille">Lille</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="label" for="zoneTravail">Zone de travail</label>
+                <input type="text" id="zoneTravail" class="input" placeholder="Zone géographique de travail">
+            </div>
+            <div class="form-group">
+                <label class="label" for="telephone">Numéro de téléphone</label>
+                <input type="tel" id="telephone" class="input" placeholder="+33 6 12 34 56 78">
+            </div>
+            <div class="form-group">
+                <label class="label" for="anneeExperience">Année d'expérience</label>
+                <input type="number" id="anneeExperience" class="input" placeholder="Nombre d'années">
+            </div>
+            <div class="form-group">
+                <label class="label" for="servicePropose">Service proposé</label>
+                <textarea id="servicePropose" class="textarea" placeholder="Décrivez les services que vous proposez..."></textarea>
+            </div>
+        </div>
+
+        <!-- Réalisations -->
+        <div class="section">
+            <h2 class="section-title">Mes réalisations</h2>
+            <div id="realisationsContainer"></div>
+            <button class="add-realisation-btn" onclick="addRealisation()">
+                <span class="plus-icon">+</span>
+                <span class="add-text">Ajouter une réalisation</span>
+            </button>
+        </div>
+
+        <!-- Me contacter -->
+        <div class="section">
+            <h2 class="section-title">Me contacter</h2>
+            <div class="form-group">
+                <label class="label" for="instagram">Instagram</label>
+                <input type="text" id="instagram" class="input" placeholder="@votre_compte_instagram">
+            </div>
+            <div class="form-group">
+                <label class="label" for="facebook">Facebook</label>
+                <input type="text" id="facebook" class="input" placeholder="Votre profil Facebook">
+            </div>
+            <div class="form-group">
+                <label class="label" for="tiktok">TikTok</label>
+                <input type="text" id="tiktok" class="input" placeholder="@votre_compte_tiktok">
+            </div>
+            <div class="form-group">
+                <label class="label" for="telephoneContact">Numéro de téléphone</label>
+                <input type="tel" id="telephoneContact" class="input" placeholder="+33 6 12 34 56 78">
+            </div>
+        </div>
+
+        <!-- Supprimer mon compte -->
+        <div class="section delete-section">
+            <h2 class="section-title delete-title">Supprimer mon compte</h2>
+            <p class="delete-warning">
+                Une fois que vous supprimez votre compte, il n'y a pas de retour en arrière. Veuillez être certain.
+            </p>
+            <button class="btn btn-delete" onclick="showDeleteDialog()">Supprimer le compte</button>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation suppression -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Êtes-vous absolument sûr?</h3>
+            <p class="modal-description">
+                Cette action ne peut pas être annulée. Cela supprimera définitivement votre compte et toutes vos données de nos serveurs.
+            </p>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDeleteDialog()">Annuler</button>
+                <button class="btn btn-delete" onclick="deleteAccount()">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de succès -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title success-title">✓ Enregistré avec succès!</h3>
+            <p class="modal-description">
+                Vos modifications ont été enregistrées avec succès.
+            </p>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="closeSuccessDialog()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Compteurs
+        let realisationCount = 0;
+        let diplomeCount = 0;
+
+        // Navigation
+        function goBack() {
+            window.history.back();
+        }
+
+        function saveChanges() {
+            console.log('Modifications enregistrées');
+            document.getElementById('successModal').classList.add('show');
+        }
+
+        // Gestion de l'image de profil
+        function changeProfileImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        document.getElementById('profileImg').src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function removeProfileImage() {
+            const profileImg = document.getElementById('profileImg');
+            profileImg.src = '';
+            profileImg.alt = 'Aucune photo';
+        }
+
+        // Gestion de l'image de couverture
+        function changeCoverImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        document.getElementById('coverImg').src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function removeCoverImage() {
+            const coverImg = document.getElementById('coverImg');
+            coverImg.src = '';
+            coverImg.alt = 'Aucune image de couverture';
+        }
+
+        // Gestion des diplômes
+        function addDiplome() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        diplomeCount++;
+                        const grid = document.getElementById('diplomesGrid');
+                        const addButton = grid.querySelector('.add-diplome-btn');
+
+                        const diplomeDiv = document.createElement('div');
+                        diplomeDiv.className = 'diplome-item';
+                        diplomeDiv.id = `diplome-${diplomeCount}`;
+                        diplomeDiv.innerHTML = `
+                            <div class="diplome-image-container">
+                                <img src="${event.target.result}" alt="Diplôme ${diplomeCount}" class="diplome-image">
+                            </div>
+                            <button class="diplome-remove-btn" onclick="removeDiplome(${diplomeCount})">×</button>
+                        `;
+
+                        grid.insertBefore(diplomeDiv, addButton);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function removeDiplome(id) {
+            const element = document.getElementById(`diplome-${id}`);
+            if (element) {
+                element.remove();
+            }
+        }
+
+        // Gestion des réalisations
+        function addRealisation() {
+            realisationCount++;
+            const container = document.getElementById('realisationsContainer');
+
+            const realisationDiv = document.createElement('div');
+            realisationDiv.className = 'realisation-item';
+            realisationDiv.id = `realisation-${realisationCount}`;
+            realisationDiv.innerHTML = `
+                <div class="realisation-content">
+                    <div class="realisation-image-container" id="realisation-img-${realisationCount}" onclick="changeRealisationImage(${realisationCount})">
+                        Cliquez pour ajouter une image
+                    </div>
+                    <div class="realisation-fields">
+                        <div class="form-group">
+                            <label class="label">Titre (optionnel)</label>
+                            <input type="text" class="input" placeholder="Titre de la réalisation">
+                        </div>
+                        <div class="form-group">
+                            <label class="label">Date (optionnel)</label>
+                            <input type="date" class="input">
+                        </div>
+                    </div>
+                    <button class="btn btn-outline btn-danger btn-icon" onclick="removeRealisation(${realisationCount})">
+                        ×
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(realisationDiv);
+        }
+
+        function changeRealisationImage(id) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imgContainer = document.getElementById(`realisation-img-${id}`);
+                        imgContainer.innerHTML = `<img src="${event.target.result}" alt="Réalisation ${id}" class="realisation-image">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function removeRealisation(id) {
+            const element = document.getElementById(`realisation-${id}`);
+            if (element) {
+                element.remove();
+            }
+        }
+
+        // Gestion des modals
+        function showDeleteDialog() {
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        function closeDeleteDialog() {
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+
+        function deleteAccount() {
+            alert('Compte supprimé avec succès');
+            closeDeleteDialog();
+        }
+
+        function closeSuccessDialog() {
+            document.getElementById('successModal').classList.remove('show');
+        }
+
+        // Fermer les modals en cliquant en dehors
+        window.onclick = function(event) {
+            const deleteModal = document.getElementById('deleteModal');
+            const successModal = document.getElementById('successModal');
+
+            if (event.target === deleteModal) {
+                closeDeleteDialog();
+            }
+
+            if (event.target === successModal) {
+                closeSuccessDialog();
+            }
+        }
+    </script>
+</body>
+</html>

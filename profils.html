@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ahmed Plombie - ServiceLine DZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+:root {
+  --blue-dark: #1a3a8f;
+  --blue:      #2563eb;
+  --blue-mid:  #2563eb;
+  --blue-light:#dbeafe;
+  --sky:       #bfdbfe;
+  --red:       #dc2626;
+  --white:     #ffffff;
+  --gray:      #f8faff;
+  --text:      #1e293b;
+  --muted:     #64748b;
+  --border:    #e2e8f0;
+}
+
+html { 
+  scroll-behavior: smooth; 
+}
+
+body { 
+  font-family: 'Poppins', sans-serif; 
+  background: #f0f2f8;
+  color: var(--text); 
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--white);
+  border-bottom: 1.5px solid #d1d9f0;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  height: 76px;
+  gap: 1.2rem;
+}
+
+.logo-wrap { 
+  display: flex; 
+  align-items: center; 
+  gap: .7rem; 
+  text-decoration: none; 
+  flex-shrink: 0; 
+}
+
+.logo-circle {
+  width: 64px; 
+  height: 64px; 
+  border-radius: 50%;
+  border: 2.5px solid #1a3a8f;
+  background: var(--white);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-circle-inner {
+  width: 58px; 
+  height: 58px; 
+  border-radius: 50%;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 1.65rem;
+}
+
+.logo-text-block { 
+  display: flex; 
+  flex-direction: column; 
+  line-height: 1; 
+}
+
+.logo-service { 
+  font-family: 'Cairo', sans-serif; 
+  font-size: 1.18rem; 
+  font-weight: 900; 
+  color: #1a3a8f; 
+}
+
+.logo-line-dz {
+  display: flex; 
+  align-items: center; 
+  gap: .25rem;
+  font-family: 'Cairo', sans-serif; 
+  font-size: 0.88rem; 
+  font-weight: 700; 
+  color: #1a3a8f;
+}
+
+.logo-line-dz .bar { 
+  display: inline-block; 
+  width: 28px; 
+  height: 1.5px; 
+  background: #1a3a8f; 
+  margin: 0 .15rem; 
+}
+
+.back-btn {
+  margin-left: auto;
+  padding: .48rem 1.4rem; 
+  border-radius: 22px;
+  border: 1.5px solid #b0b8d0; 
+  color: #333;
+  background: var(--white); 
+  font-size: 0.88rem; 
+  font-weight: 500;
+  cursor: pointer; 
+  text-decoration: none; 
+  transition: all .2s;
+}
+
+.back-btn:hover { 
+  border-color: #2357d8; 
+  color: #2357d8; 
+}
+
+/* Profile Container */
+.profile-container {
+  max-width: 900px;
+  margin: 100px auto 0;
+  padding: 0 1rem;
+}
+
+/* Profile Card */
+.profile-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Profile Header */
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.profile-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  margin-bottom: 2rem;
+}
+
+.profile-avatar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #93c5fd, #60a5fa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: white;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+}
+
+.profile-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--blue);
+  margin-bottom: 0.5rem;
+}
+
+.profile-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+}
+
+/* Info Section */
+.info-section {
+  margin-top: 2rem;
+}
+
+.info-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Realisations Section */
+.realisations-section {
+  margin-top: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  margin-bottom: 1.5rem;
+}
+
+.realisations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.realisation-item {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e8f0fe, #dbeafe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.realisation-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+}
+
+.realisation-placeholder {
+  color: #93c5fd;
+}
+
+/* Mode Section */
+.mode-section {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background: #fafbff;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.mode-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.mode-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--blue);
+}
+
+/* Reviews Section */
+.reviews-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.review-item {
+  padding: 1.5rem;
+  background: #fafbff;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white;
+}
+
+.review-info {
+  flex: 1;
+}
+
+.review-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+
+.review-stars {
+  color: #fbbf24;
+  font-size: 0.85rem;
+}
+
+.review-text {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Rating Section */
+.rating-section {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.rating-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  margin-bottom: 1.5rem;
+}
+
+.star-rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.star {
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #e2e8f0;
+}
+
+.star.active,
+.star:hover {
+  color: #fbbf24;
+  transform: scale(1.1);
+}
+
+.comment-box {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.comment-input {
+  width: 100%;
+  padding: 1rem 3rem 1rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 100px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.comment-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+.send-btn {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e90ff, #0080ff);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.send-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(30,144,255,0.4);
+}
+
+/* Contact Buttons */
+.contact-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.contact-btn {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.contact-btn.primary {
+  background: linear-gradient(135deg, #1e90ff, #0080ff);
+  color: white;
+  box-shadow: 0 4px 12px rgba(30,144,255,0.3);
+}
+
+.contact-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(30,144,255,0.4);
+}
+
+.contact-btn.secondary {
+  background: white;
+  color: var(--blue);
+  border: 2px solid var(--blue);
+}
+
+.contact-btn.secondary:hover {
+  background: var(--blue-light);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-card,
+  .reviews-card,
+  .rating-section {
+    padding: 1.5rem;
+  }
+
+  .realisations-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .contact-buttons {
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="index.html" class="logo-wrap">
+    <div class="logo-circle">
+      <div class="logo-circle-inner">🔧</div>
+    </div>
+    <div class="logo-text-block">
+      <span class="logo-service">Service</span>
+      <div class="logo-line-dz">
+        Line<span class="bar"></span>DZ
+      </div>
+    </div>
+  </a>
+  <a href="recherche.html" class="back-btn">← Retour à la recherche</a>
+</nav>
+
+<!-- Profile Container -->
+<div class="profile-container">
+  
+  <!-- Profile Card -->
+  <div class="profile-card">
+    <h1 class="profile-title">Ahmed Plombie</h1>
+    
+    <!-- Avatar -->
+    <div class="profile-avatar-container">
+      <div class="profile-avatar">👤</div>
+    </div>
+    
+    <!-- Name & Status -->
+    <div class="profile-header">
+      <h2 class="profile-name">Ahmed plombie / Nom commercial</h2>
+      <div class="profile-status">
+        <span class="status-dot"></span>
+        Disponible
+      </div>
+    </div>
+    
+    <!-- Info Section -->
+    <div class="info-section">
+      <div class="info-item">
+        <div class="info-label">Catégorie principale</div>
+        <div class="info-value">Électricité et plomberie</div>
+      </div>
+      
+      <div class="info-item">
+        <div class="info-label">Ville / Zone de travail</div>
+        <div class="info-value">Alger, Bab Ezzouar, Hydra, Kouba</div>
+      </div>
+      
+      <div class="info-item">
+        <div class="info-label">Téléphone</div>
+        <div class="info-value">+213 555 123 456</div>
+      </div>
+      
+      <div class="info-item">
+        <div class="info-label">Terrain d'expérience</div>
+        <div class="info-value">10 ans d'expérience</div>
+      </div>
+      
+      <div class="info-item">
+        <div class="info-label">Description courte</div>
+        <div class="info-value">
+          Plombier professionnel spécialisé dans l'installation et la réparation de systèmes de plomberie. 
+          Service rapide et de qualité, disponible 7j/7 pour les urgences.
+        </div>
+      </div>
+    </div>
+    
+    <!-- Realisations -->
+    <div class="realisations-section">
+      <h3 class="section-title">Réalisations</h3>
+      <div class="realisations-grid">
+        <div class="realisation-item">
+          <span class="realisation-placeholder">🖼️</span>
+        </div>
+        <div class="realisation-item">
+          <span class="realisation-placeholder">🖼️</span>
+        </div>
+        <div class="realisation-item">
+          <span class="realisation-placeholder">🖼️</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mode de traitement -->
+    <div class="mode-section">
+      <div class="mode-label">Mode de traitement :</div>
+      <div class="mode-value">
+        <span>💳</span> Unity / Paiement en ligne
+      </div>
+    </div>
+    
+    <!-- Contact Buttons -->
+    <div class="contact-buttons">
+      <button class="contact-btn primary">
+        📞 Appeler maintenant
+      </button>
+      <button class="contact-btn secondary">
+        💬 Envoyer un message
+      </button>
+    </div>
+  </div>
+  
+  <!-- Reviews Section -->
+  <div class="reviews-card">
+    <h3 class="section-title">Avis des clients</h3>
+    
+    <div class="review-item">
+      <div class="review-header">
+        <div class="review-avatar">K</div>
+        <div class="review-info">
+          <div class="review-name">Karim Belhadj</div>
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+      </div>
+      <p class="review-text">
+        "Excellent travail ! Ahmed est très professionnel et a réparé ma fuite d'eau en moins d'une heure. 
+        Je le recommande vivement."
+      </p>
+    </div>
+    
+    <div class="review-item">
+      <div class="review-header">
+        <div class="review-avatar">S</div>
+        <div class="review-info">
+          <div class="review-name">Sarah Mehadji</div>
+          <div class="review-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+      </div>
+      <p class="review-text">
+        "Très satisfaite du service. Ponctuel, travail soigné et tarifs raisonnables. 
+        Je ferai de nouveau appel à lui sans hésiter."
+      </p>
+    </div>
+  </div>
+  
+  <!-- Rating Section -->
+  <div class="rating-section">
+    <div class="rating-title">
+      <span>⭐</span>
+      Notez votre expérience :
+    </div>
+    
+    <div class="star-rating" id="starRating">
+      <span class="star" data-rating="1">★</span>
+      <span class="star" data-rating="2">★</span>
+      <span class="star" data-rating="3">★</span>
+      <span class="star" data-rating="4">★</span>
+      <span class="star" data-rating="5">★</span>
+    </div>
+    
+    <div class="comment-box">
+      <textarea 
+        class="comment-input" 
+        placeholder="Partagez votre expérience..."
+      ></textarea>
+      <button class="send-btn">➤</button>
+    </div>
+  </div>
+  
+</div>
+
+<script>
+// Star rating functionality
+const stars = document.querySelectorAll('.star');
+let currentRating = 0;
+
+stars.forEach(star => {
+  star.addEventListener('click', () => {
+    currentRating = parseInt(star.getAttribute('data-rating'));
+    updateStars();
+  });
+  
+  star.addEventListener('mouseenter', () => {
+    const rating = parseInt(star.getAttribute('data-rating'));
+    highlightStars(rating);
+  });
+});
+
+document.getElementById('starRating').addEventListener('mouseleave', () => {
+  updateStars();
+});
+
+function updateStars() {
+  stars.forEach(star => {
+    const rating = parseInt(star.getAttribute('data-rating'));
+    if (rating <= currentRating) {
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+}
+
+function highlightStars(rating) {
+  stars.forEach(star => {
+    const starRating = parseInt(star.getAttribute('data-rating'));
+    if (starRating <= rating) {
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+}
+
+// Send button
+document.querySelector('.send-btn').addEventListener('click', () => {
+  const comment = document.querySelector('.comment-input').value;
+  if (comment.trim() && currentRating > 0) {
+    alert(`Merci pour votre avis ! Note: ${currentRating} étoiles`);
+    document.querySelector('.comment-input').value = '';
+    currentRating = 0;
+    updateStars();
+  } else {
+    alert('Veuillez donner une note et écrire un commentaire.');
+  }
+});
+
+// Contact buttons
+document.querySelector('.contact-btn.primary').addEventListener('click', () => {
+  alert('Fonctionnalité d\'appel à venir...');
+});
+
+document.querySelector('.contact-btn.secondary').addEventListener('click', () => {
+  alert('Fonctionnalité de messagerie à venir...');
+});
+</script>
+
+</body>
+</html>

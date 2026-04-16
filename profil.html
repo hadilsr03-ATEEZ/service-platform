@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil artisan</title>
+
+<style>
+body {font-family: Arial; background:#f5f7ff; padding:20px;}
+.profile {background:white; padding:20px; border-radius:15px; max-width:600px; margin:auto;}
+h1 {color:#2563eb;}
+</style>
+</head>
+
+<body>
+
+<div class="profile">
+  <h1 id="nom"></h1>
+  <p id="metier"></p>
+  <p id="ville"></p>
+  <p id="tel"></p>
+  <p id="desc"></p>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+
+const profils = {
+  ahmed: {
+    nom: "Ahmed Benali",
+    metier: "Plombier",
+    ville: "Alger",
+    tel: "+213555123456",
+    desc: "Plombier professionnel avec 10 ans d'expérience"
+  },
+  karim: {
+    nom: "Karim Messaoud",
+    metier: "Électricien",
+    ville: "Oran",
+    tel: "+213555000000",
+    desc: "Expert en électricité"
+  },
+  fatima: {
+    nom: "Fatima Zahra",
+    metier: "Ménage",
+    ville: "Constantine",
+    tel: "+213555111111",
+    desc: "Service de nettoyage professionnel"
+  }
+};
+
+if(profils[id]){
+  document.getElementById("nom").textContent = profils[id].nom;
+  document.getElementById("metier").textContent = profils[id].metier;
+  document.getElementById("ville").textContent = profils[id].ville;
+  document.getElementById("tel").textContent = profils[id].tel;
+  document.getElementById("desc").textContent = profils[id].desc;
+}
+</script>
+
+</body>
+</html>

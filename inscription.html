@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription - ServiceLine DZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+:root {
+  --blue-dark: #1a3a8f;
+  --blue:      #2563eb;
+  --blue-mid:  #2563eb;
+  --blue-light:#dbeafe;
+  --sky:       #bfdbfe;
+  --red:       #dc2626;
+  --white:     #ffffff;
+  --gray:      #f8faff;
+  --text:      #1e293b;
+  --muted:     #64748b;
+  --border:    #e2e8f0;
+}
+
+html { 
+  scroll-behavior: smooth; 
+}
+
+body { 
+  font-family: 'Poppins', sans-serif; 
+  background: linear-gradient(135deg, #e8f0fe 0%, #dbeafe 50%, #f8faff 100%);
+  color: var(--text); 
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(30,80,200,0.15);
+  padding: 3rem 2.5rem;
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f8faff;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+
+.back-button:hover {
+  background: var(--blue-light);
+  border-color: var(--blue);
+}
+
+.header {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.3rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle a {
+  color: var(--blue);
+  text-decoration: underline;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: #fafbff;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--blue);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+.form-input::placeholder {
+  color: #b0bec5;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--muted);
+  transition: color 0.2s;
+  padding: 0.5rem;
+}
+
+.password-toggle:hover {
+  color: var(--blue);
+}
+
+.conditions {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #fafbff;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.conditions-title {
+  font-size: 0.9rem;
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.conditions-list {
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.conditions-list li {
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.checkbox-group input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+.checkbox-group label {
+  font-size: 0.9rem;
+  color: var(--text);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #1e90ff, #0080ff);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 1rem;
+  box-shadow: 0 8px 24px rgba(30,144,255,0.3);
+}
+
+.submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(30,144,255,0.4);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .back-button {
+    top: 1.5rem;
+    left: 1.5rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="javascript:history.back()" class="back-button">←</a>
+  
+  <div class="header">
+    <h1 class="title">
+      Rejoignez-nous dès maintenant.<br>
+      Inscrivez-vous en quelques étapes et commencez immédiatement.
+    </h1>
+    
+    <p class="subtitle">
+      vous avez déjà un compte !
+      <a href="connexion.html">Se Connecter</a>
+    </p>
+  </div>
+  
+  <form class="form" action="#" method="POST">
+    <div class="form-group">
+      <input 
+        type="text" 
+        class="form-input" 
+        placeholder="Nom & Prenom" 
+        required
+      >
+    </div>
+    
+    <div class="form-group">
+      <input 
+        type="text" 
+        class="form-input" 
+        placeholder="E_Mail / Tel" 
+        required
+      >
+    </div>
+    
+    <div class="form-group">
+      <input 
+        type="password" 
+        class="form-input" 
+        id="password"
+        placeholder="Mot de passe" 
+        required
+      >
+      <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+    </div>
+    
+    <div class="form-group">
+      <input 
+        type="password" 
+        class="form-input" 
+        id="confirm-password"
+        placeholder="Confirme mot de passe" 
+        required
+      >
+      <button type="button" class="password-toggle" onclick="togglePassword('confirm-password')">👁️</button>
+    </div>
+    
+    <div class="conditions">
+      <p class="conditions-title">Conditions de création de compte :</p>
+      <ul class="conditions-list">
+        <li>-Informations réelles</li>
+        <li>_Un seul compte par utilisateur</li>
+        <li>-Respect des règles de l'application</li>
+      </ul>
+      
+      <div class="checkbox-group">
+        <input type="radio" id="accept" name="conditions" required>
+        <label for="accept">accepter</label>
+      </div>
+    </div>
+    
+    <button type="submit" class="submit-button">
+      Inscrire
+    </button>
+  </form>
+
+
+
+</div>
+
+<script>
+function togglePassword(fieldId) {
+  const passwordInput = document.getElementById(fieldId);
+  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  passwordInput.setAttribute('type', type);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recherche - ServiceLine DZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+:root {
+  --blue-dark: #1a3a8f;
+  --blue:      #2563eb;
+  --blue-mid:  #2563eb;
+  --blue-light:#dbeafe;
+  --sky:       #bfdbfe;
+  --red:       #dc2626;
+  --white:     #ffffff;
+  --gray:      #f8faff;
+  --text:      #1e293b;
+  --muted:     #64748b;
+  --border:    #e2e8f0;
+}
+
+html { 
+  scroll-behavior: smooth; 
+}
+
+body { 
+  font-family: 'Poppins', sans-serif; 
+  background: #fafbff;
+  color: var(--text); 
+  min-height: 100vh;
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--white);
+  border-bottom: 1.5px solid #d1d9f0;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  height: 76px;
+  gap: 1.2rem;
+}
+
+.logo-wrap { 
+  display: flex; 
+  align-items: center; 
+  gap: .7rem; 
+  text-decoration: none; 
+  flex-shrink: 0; 
+}
+
+.logo-circle {
+  width: 64px; 
+  height: 64px; 
+  border-radius: 50%;
+  border: 2.5px solid #1a3a8f;
+  background: var(--white);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-circle-inner {
+  width: 58px; 
+  height: 58px; 
+  border-radius: 50%;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 1.65rem;
+}
+
+.logo-text-block { 
+  display: flex; 
+  flex-direction: column; 
+  line-height: 1; 
+}
+
+.logo-service { 
+  font-family: 'Cairo', sans-serif; 
+  font-size: 1.18rem; 
+  font-weight: 900; 
+  color: #1a3a8f; 
+}
+
+.logo-line-dz {
+  display: flex; 
+  align-items: center; 
+  gap: .25rem;
+  font-family: 'Cairo', sans-serif; 
+  font-size: 0.88rem; 
+  font-weight: 700; 
+  color: #1a3a8f;
+}
+
+.logo-line-dz .bar { 
+  display: inline-block; 
+  width: 28px; 
+  height: 1.5px; 
+  background: #1a3a8f; 
+  margin: 0 .15rem; 
+}
+
+.nav-right { 
+  margin-left: auto; 
+  display: flex; 
+  align-items: center; 
+  gap: .6rem; 
+}
+
+.btn-nav {
+  padding: .48rem 1.4rem; 
+  border-radius: 22px;
+  font-size: 0.88rem; 
+  font-weight: 500;
+  cursor: pointer; 
+  text-decoration: none; 
+  transition: all .2s;
+  white-space: nowrap;
+  border: none;
+}
+
+.btn-login {
+  border: 1.5px solid #b0b8d0; 
+  color: #333;
+  background: var(--white);
+}
+
+.btn-login:hover { 
+  border-color: #2357d8; 
+  color: #2357d8; 
+}
+
+.btn-signup {
+  background: #2357d8; 
+  color: var(--white);
+  font-weight: 600;
+}
+
+.btn-signup:hover { 
+  background: #1a3a8f; 
+}
+
+/* Search Section */
+.search-section {
+  padding-top: 100px;
+  padding-bottom: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.search-container {
+  margin-bottom: 2rem;
+}
+
+.search-box {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: var(--muted);
+}
+
+.search-input {
+  width: 100%;
+  padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  color: var(--text);
+  background: white;
+  transition: all 0.3s;
+  outline: none;
+  box-shadow: 0 4px 20px rgba(30,80,200,0.08);
+}
+
+.search-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 8px 30px rgba(30,80,200,0.15);
+}
+
+.search-input::placeholder {
+  color: #b0bec5;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 0.7rem 1.5rem;
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  background: white;
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
+/* Results */
+.results-header {
+  margin-bottom: 2rem;
+}
+
+.results-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  margin-bottom: 0.5rem;
+}
+
+.results-count {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.result-card {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.result-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 35px rgba(30,80,200,0.12);
+  border-color: var(--sky);
+}
+
+.result-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.result-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.result-info {
+  flex: 1;
+}
+
+.result-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.result-job {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.result-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.22rem 0.7rem;
+  border-radius: 2rem;
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.result-tags {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.result-tag {
+  background: var(--blue-light);
+  color: var(--blue-mid);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.18rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--sky);
+}
+
+.result-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border);
+}
+
+.result-price {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  color: var(--blue-dark);
+}
+
+.result-price small {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.result-meta {
+  text-align: right;
+}
+
+.result-loc {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+.result-stars {
+  color: #f59e0b;
+  font-size: 0.78rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  margin-bottom: 0.5rem;
+}
+
+.empty-text {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+
+  <a href="index.html" class="logo-wrap">
+    <div class="logo-circle">
+      <div class="logo-circle-inner">
+         
+      </div>
+    </div>
+    <div class="logo-text-block">
+      <span class="logo-service">Service</span>
+      <div class="logo-line-dz">
+        LineDZ
+      </div>
+    </div>
+  </a>
+
+  <div class="nav-right">
+    <a href="connexion.html" class="btn-nav btn-login">Se connecter</a>
+    <a href="inscription.html" class="btn-nav btn-signup">S'inscrire</a>
+  </div>
+</nav>
+
+
+<!-- Search Section -->
+<section class="search-section">
+  <div class="search-container">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Recherchez un artisan par nom ou catégorie "
+        id="searchInput"
+      >
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">Tous</button>
+    <button class="filter-btn" data-filter="Développement web">Développement web</button>
+    <button class="filter-btn" data-filter="Marketing digital">Marketing digital</button>
+    <button class="filter-btn" data-filter="Nettoyage">Nettoyage</button>
+    <button class="filter-btn" data-filter="Transport et logistique">Transport et logistique</button>
+    <button class="filter-btn" data-filter="Électricité et plomberie">Électricité et plomberie</button>
+    <button class="filter-btn" data-filter="Réparation et maintenance">Réparation et maintenance</button>
+  </div>
+
+  <!-- Results Header -->
+  <div class="results-header">
+    <h2 class="results-title">Professionnels disponibles</h2>
+    <p class="results-count" id="resultsCount">6 résultats trouvés</p>
+  </div>
+
+  <!-- Results Grid -->
+   
+  <div class="results-grid" id="resultsGrid">
+    <!-- Result Card 1 -->
+     <a href="profilss.html?id=Ahmed" class="result-card">
+     <div class="result-card" data-category="Électricité et plomberie">
+      <div class="result-header">
+        <div class="result-avatar" style="background: #3b82f6;">AB</div>
+        <div class="result-info">
+          <h3 class="result-name">Ahmed plombie</h3>
+          <p class="result-job">Plombier professionnel</p>
+        </div>
+        <span class="result-badge">Disponible</span>
+      </div>
+      <div class="result-tags">
+        <span class="result-tag">Plomberie</span>
+        <span class="result-tag">Réparation</span>
+        <span class="result-tag">Installation</span>
+      </div>
+      <div class="result-footer">
+        <div class="result-price">
+         
+        </div>
+        <div class="result-meta">
+          <div class="result-loc">📍 Alger</div>
+          <div class="result-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+      </div>
+     </div>
+  </a>
+    <!-- Result Card 2 -->
+     <a href="profilss.html?id=karim" class="result-card">
+    <div class="result-card" data-category="Électricité et plomberie">
+      <div class="result-header">
+        <div class="result-avatar" style="background: #8b5cf6;">KM</div>
+        <div class="result-info">
+          <h3 class="result-name">Karim Messaoud</h3>
+          <p class="result-job">Électricien </p>
+        </div>
+        <span class="result-badge">Disponible</span>
+      </div>
+      <div class="result-tags">
+        <span class="result-tag">Électricité</span>
+        <span class="result-tag">Dépannage</span>
+      </div>
+      <div class="result-footer">
+        <div class="result-price">
+         
+        </div>
+        <div class="result-meta">
+          <div class="result-loc">📍 Oran</div>
+          <div class="result-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+      </div>
+    </div>
+</a>
+    <!-- Result Card 3 -->
+     <a href="profilss.html?id=fatima" class="result-card">
+     <div class="result-card" data-category="Nettoyage">
+      <div class="result-header">
+        <div class="result-avatar" style="background: #ec4899;">FZ</div>
+        <div class="result-info">
+          <h3 class="result-name">Fatima Zahra</h3>
+          <p class="result-job">Service de ménage</p>
+        </div>
+        <span class="result-badge">Disponible</span>
+      </div>
+      <div class="result-tags">
+        <span class="result-tag">Ménage</span>
+        <span class="result-tag">Nettoyage</span>
+      </div>
+      <div class="result-footer">
+        <div class="result-price">
+         
+        </div>
+        <div class="result-meta">
+          <div class="result-loc">📍 Constantine</div>
+          <div class="result-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+      </div>
+    </div>
+   </a>
+    <!-- Result Card 4 -->
+     <a href="profilss.html?id=said" class="result-card">
+    <div class="result-card" data-category="Développement web">
+      <div class="result-header">
+        <div class="result-avatar" style="background: #10b981;">SM</div>
+        <div class="result-info">
+          <h3 class="result-name">Said dev</h3>
+          <p class="result-job">developeur</p>
+        </div>
+        <span class="result-badge">Disponible</span>
+      </div>
+      <div class="result-tags">
+        <span class="result-tag">developement</span>
+        
+      </div>
+      <div class="result-footer">
+        <div class="result-price">
+          
+        </div>
+        <div class="result-meta">
+          <div class="result-loc">📍 Annaba</div>
+          <div class="result-stars">⭐⭐⭐⭐</div>
+        </div>
+      </div>
+    </div>
+  </a>
+    <!-- Result Card 5 -->
+     <a href="profilss.html?id=Rachid" class="result-card">
+    <div class="result-card" data-category="Réparation et maintenance">
+      <div class="result-header">
+        <div class="result-avatar" style="background: #f59e0b;">RB</div>
+        <div class="result-info">
+          <h3 class="result-name">Peintre Rachid </h3>
+          <p class="result-job">Peintre décorateur</p>
+        </div>
+        <span class="result-badge">Disponible</span>
+      </div>
+      <div class="result-tags">
+        <span class="result-tag">Peinture</span>
+        <span class="result-tag">Décoration</span>
+      </div>
+      <div class="result-footer">
+        <div class="result-price">
+          
+        </div>
+        <div class="result-meta">
+          <div class="result-loc">📍 Blida</div>
+          <div class="result-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+      </div>
+    </div>
+  </a>
+    <!-- Result Card 6 -->
+     <a href="profilss.html?id=Yacine" class="result-card">
+    <div class="result-card" data-category="Électricité et plomberie">
+      <div class="result-header">
+        <div class="result-avatar" style="background: #3b82f6;">YH</div>
+        <div class="result-info">
+          <h3 class="result-name">Yacine Hamidi</h3>
+          <p class="result-job">Plombier chauffagiste</p>
+        </div>
+        <span class="result-badge">Disponible</span>
+      </div>
+      <div class="result-tags">
+        <span class="result-tag">Plomberie</span>
+       
+      </div>
+      <div class="result-footer">
+        <div class="result-price">
+          
+        </div>
+        <div class="result-meta">
+          <div class="result-loc">📍 Chlef</div>
+          <div class="result-stars">⭐⭐⭐⭐</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>
+</section>
+
+<script>
+// Filter functionality
+const filterButtons = document.querySelectorAll('.filter-btn');
+const resultCards = document.querySelectorAll('.result-card');
+const resultsCount = document.getElementById('resultsCount');
+
+filterButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // Remove active class from all buttons
+    filterButtons.forEach(btn => btn.classList.remove('active'));
+    // Add active class to clicked button
+    button.classList.add('active');
+    
+    const filter = button.getAttribute('data-filter');
+    let visibleCount = 0;
+    
+    resultCards.forEach(card => {
+      const category = card.getAttribute('data-category');
+      
+      if (filter === 'all' || category === filter) {
+        card.style.display = 'block';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    
+    resultsCount.textContent = `${visibleCount} résultat${visibleCount > 1 ? 's' : ''} trouvé${visibleCount > 1 ? 's' : ''}`;
+  });
+});
+
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', (e) => {
+  const searchTerm = e.target.value.toLowerCase();
+  let visibleCount = 0;
+  
+  resultCards.forEach(card => {
+    const name = card.querySelector('.result-name').textContent.toLowerCase();
+    const job = card.querySelector('.result-job').textContent.toLowerCase();
+    const tags = Array.from(card.querySelectorAll('.result-tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
+    
+    if (name.includes(searchTerm) || job.includes(searchTerm) || tags.includes(searchTerm)) {
+      card.style.display = 'block';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  
+  resultsCount.textContent = `${visibleCount} résultat${visibleCount > 1 ? 's' : ''} trouvé${visibleCount > 1 ? 's' : ''}`;
+});
+
+const params = new URLSearchParams(window.location.search);
+const categorie = params.get("categorie");
+
+// si une catégorie existe → filtrer automatiquement
+if (categorie) {
+  let visibleCount = 0;
+
+  resultCards.forEach(card => {
+    const category = card.getAttribute('data-category');
+
+    if (category === categorie) {
+      card.style.display = 'block';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // mettre à jour le nombre
+  resultsCount.textContent = `${visibleCount} résultat${visibleCount > 1 ? 's' : ''} trouvé${visibleCount > 1 ? 's' : ''}`;
+}
+</script>
+
+
+</body>
+</html>
