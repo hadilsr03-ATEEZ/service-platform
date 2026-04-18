@@ -189,7 +189,7 @@ body {
   gap: 0.75rem;
 }
 
-.checkbox-group input[type="radio"] {
+.checkbox-group input[type="checkbox"] {
   width: 18px;
   height: 18px;
   accent-color: var(--blue);
@@ -228,7 +228,6 @@ body {
   transform: translateY(0);
 }
 
-/* Responsive */
 @media (max-width: 600px) {
   .container {
     padding: 2.5rem 1.5rem;
@@ -257,10 +256,11 @@ body {
     </p>
   </div>
   
-  <form class="form" action="#" method="POST">
+  <form class="form" onsubmit="register(event)">
     <div class="form-group">
       <input 
         type="text" 
+        id="fullName"
         class="form-input" 
         placeholder="Nom & Prenom" 
         required
@@ -269,9 +269,10 @@ body {
     
     <div class="form-group">
       <input 
-        type="text" 
+        type="email" 
+        id="contact"
         class="form-input" 
-        placeholder="E_Mail / Tel" 
+        placeholder="E-mail \ Tel" 
         required
       >
     </div>
@@ -291,24 +292,24 @@ body {
       <input 
         type="password" 
         class="form-input" 
-        id="confirm-password"
+        id="confirmPassword"
         placeholder="Confirme mot de passe" 
         required
       >
-      <button type="button" class="password-toggle" onclick="togglePassword('confirm-password')">👁️</button>
+      <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
     </div>
     
     <div class="conditions">
       <p class="conditions-title">Conditions de création de compte :</p>
       <ul class="conditions-list">
-        <li>-Informations réelles</li>
-        <li>_Un seul compte par utilisateur</li>
-        <li>-Respect des règles de l'application</li>
+        <li>- Informations réelles</li>
+        <li>- Un seul compte par utilisateur</li>
+        <li>- Respect des règles de l'application</li>
       </ul>
       
       <div class="checkbox-group">
-        <input type="radio" id="accept" name="conditions" required>
-        <label for="accept">accepter</label>
+        <input type="checkbox" id="accept" required>
+        <label for="accept">Accepter</label>
       </div>
     </div>
     
@@ -316,9 +317,6 @@ body {
       Inscrire
     </button>
   </form>
-
-
-
 </div>
 
 <script>
@@ -326,6 +324,51 @@ function togglePassword(fieldId) {
   const passwordInput = document.getElementById(fieldId);
   const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
   passwordInput.setAttribute('type', type);
+}
+
+function register(event) {
+  event.preventDefault();
+
+  let fullName = document.getElementById("fullName").value.trim();
+  let contact = document.getElementById("contact").value.trim();
+  let password = document.getElementById("password").value;
+  let confirmPassword = document.getElementById("confirmPassword").value;
+  let accept = document.getElementById("accept").checked;
+
+  if (!accept) {
+    alert("Please accept the conditions.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match.");
+    return;
+  }
+
+  fetch("http://localhost/service-platform/api/register.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      fullName: fullName,
+      contact: contact,
+      password: password
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.message) {
+      alert(data.message);
+      window.location.href = "connexion.html";
+    } else {
+      alert(data.error || "Registration failed.");
+    }
+  })
+  .catch(error => {
+    console.error("Error:", error);
+    alert("Something went wrong.");
+  });
 }
 </script>
 

@@ -191,6 +191,20 @@ body {
     left: 1.5rem;
   }
 }
+
+.message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #22c55e;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  display: none;
+  font-weight: 500;
+  z-index: 999;
+}
 </style>
 </head>
 <body>
@@ -210,12 +224,13 @@ body {
     </p>
   </div>
   
-  <form class="form" action="#" method="POST">
+  <form class="form" onsubmit="login(event)">
     <div class="form-group">
       <input 
-        type="text" 
+        type="email" 
+        id="email"
         class="form-input" 
-        placeholder="Nom & Prenom" 
+        placeholder="E-mail" 
         required
       >
     </div>
@@ -234,6 +249,8 @@ body {
     <button type="submit" class="submit-button">
       Se-Connecter
     </button>
+
+    <div id="message" class="message"></div>
   </form>
     
 </div>
@@ -243,6 +260,55 @@ function togglePassword() {
   const passwordInput = document.getElementById('password');
   const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
   passwordInput.setAttribute('type', type);
+}
+
+function login(event) {
+  event.preventDefault();
+
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  fetch("http://localhost/service-platform/api/login.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.message) {
+      // نخزنو user
+      localStorage.setItem("user", JSON.stringify(data.user));
+      
+      // نوري message من فوق
+      showMessage("Login successful");
+
+      // نروحو للprofil بعد 2 ثواني
+      setTimeout(() => {
+        window.location.href = "profil.html";
+      }, 500);
+    } else {
+      alert(data.error);
+    }
+  })
+  .catch(error => {
+    console.error(error);
+    alert("Something went wrong");
+  });
+}
+
+function showMessage(text) {
+  let msg = document.getElementById("message");
+  msg.innerText = text;
+  msg.style.display = "block";
+
+  setTimeout(() => {
+    msg.style.display = "none";
+  }, 2000);
 }
 </script>
 
