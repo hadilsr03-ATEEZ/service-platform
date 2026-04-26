@@ -6,18 +6,18 @@ include "connect.php";
 $data = json_decode(file_get_contents("php://input"));
 
 // تحقق من البيانات
-if (!$data || !isset($data->email, $data->password)) {
+if (!$data || !isset($data->contact, $data->password)) {
     echo json_encode(["error" => "Missing data"]);
     exit;
 }
 
-$email = trim($data->email);
+$contact = trim($data->contact);
 $password = $data->password;
 
 // نجيب user من database
 $sql = "SELECT userId, fullName, email, passwordHash, status FROM users WHERE email = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $email);
+$stmt->bind_param("s", $contact);
 $stmt->execute();
 $result = $stmt->get_result();
 

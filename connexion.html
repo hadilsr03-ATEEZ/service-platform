@@ -190,20 +190,20 @@ body {
     top: 1.5rem;
     left: 1.5rem;
   }
-}
 
-.message {
+  .message {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #22c55e;
   color: white;
   padding: 12px 25px;
   border-radius: 8px;
   display: none;
   font-weight: 500;
   z-index: 999;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
 }
 </style>
 </head>
@@ -227,10 +227,10 @@ body {
   <form class="form" onsubmit="login(event)">
     <div class="form-group">
       <input 
-        type="email" 
-        id="email"
+        type="text" 
+        id="contact"
         class="form-input" 
-        placeholder="E-mail" 
+        placeholder="E-mail \ Tel" 
         required
       >
     </div>
@@ -249,8 +249,6 @@ body {
     <button type="submit" class="submit-button">
       Se-Connecter
     </button>
-
-    <div id="message" class="message"></div>
   </form>
     
 </div>
@@ -262,10 +260,21 @@ function togglePassword() {
   passwordInput.setAttribute('type', type);
 }
 
+function showMessage(text, isError = false) {
+  const msg = document.getElementById("message");
+  msg.innerText = text;
+  msg.style.display = "block";
+  msg.style.background = isError ? "#dc2626" : "#22c55e";
+
+  setTimeout(() => {
+    msg.style.display = "none";
+  }, 2000);
+}
+
 function login(event) {
   event.preventDefault();
 
-  let email = document.getElementById("email").value;
+  let contact = document.getElementById("contact").value.trim();
   let password = document.getElementById("password").value;
 
   fetch("http://localhost/service-platform/api/login.php", {
@@ -274,41 +283,31 @@ function login(event) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      email: email,
+      contact: contact,
       password: password
     })
   })
-  .then(res => res.json())
+  .then(async response => {
+    let text = await response.text();
+    console.log("SERVER RESPONSE:", text);
+    return JSON.parse(text);
+  })
   .then(data => {
     if (data.message) {
-      // نخزنو user
       localStorage.setItem("user", JSON.stringify(data.user));
-      
-      // نوري message من فوق
-      showMessage("Login successful");
+      showMessage("Connexion réussie");
 
-      // نروحو للprofil بعد 2 ثواني
       setTimeout(() => {
         window.location.href = "profil.html";
-      }, 500);
+      }, 1500);
     } else {
-      alert(data.error);
+      showMessage(data.error || "Login failed", true);
     }
   })
   .catch(error => {
-    console.error(error);
-    alert("Something went wrong");
+    console.error("REAL ERROR:", error);
+    showMessage("Something went wrong", true);
   });
-}
-
-function showMessage(text) {
-  let msg = document.getElementById("message");
-  msg.innerText = text;
-  msg.style.display = "block";
-
-  setTimeout(() => {
-    msg.style.display = "none";
-  }, 2000);
 }
 </script>
 
