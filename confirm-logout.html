@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Déconnexion</title>
+
+<style>
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: linear-gradient(135deg, #f4f6fb, #e9eefc);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* BOX */
+.box {
+  background: #fff;
+  padding: 40px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  max-width: 420px;
+  width: 90%;
+  animation: fadeIn 0.4s ease;
+}
+
+/* ICON */
+.icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+/* TITLE */
+h2 {
+  color: #1a6bdc;
+  margin-bottom: 10px;
+}
+
+/* TEXT */
+p {
+  color: #666;
+  margin-bottom: 25px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* BUTTONS */
+.btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+/* CONFIRM */
+.btn-danger {
+  background: #e53e3e;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c53030;
+  transform: translateY(-2px);
+}
+
+/* CANCEL */
+.btn-cancel {
+  background: #edf2f7;
+  color: #333;
+}
+
+.btn-cancel:hover {
+  background: #e2e8f0;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <div class="icon">🚪</div>
+
+  <h2>Déconnexion</h2>
+
+  <p>
+    Si vous vous déconnectez, vous devrez vous reconnecter pour accéder à votre espace.
+    Voulez-vous vraiment continuer ?
+  </p>
+
+  <div class="btns">
+    <button class="btn btn-danger" onclick="logout()">Se déconnecter</button>
+    <button class="btn btn-cancel" onclick="cancel()">Annuler</button>
+  </div>
+</div>
+
+<script>
+function logout() {
+  // redirection vers logout.php (qui supprime la session)
+  window.location.href = "logout.php";
+}
+
+function cancel() {
+  // retourne à la page précédente
+  window.history.back();
+}
+</script>
+
+</body>
+</html>

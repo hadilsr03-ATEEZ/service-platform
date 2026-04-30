@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServiceLineDz — Admin Paramètres</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f4f6fb;
+    --surface: #ffffff;
+    --surface2: #f0f3f9;
+    --border: #dde3ef;
+    --accent: #1a6bdc;
+    --accent2: #0f4fab;
+    --accent-light: rgba(26,107,220,0.08);
+    --text: #1a1f36;
+    --muted: #7a85a3;
+    --success: #1db97a;
+    --danger: #e53e3e;
+    --sidebar-bg: #0f2152;
+    --sidebar-text: #c5d3f0;
+    --sidebar-active-bg: rgba(255,255,255,0.1);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background: var(--sidebar-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 28px 0;
+    position: fixed;
+    top: 0; left: 0;
+    box-shadow: 4px 0 20px rgba(15,33,82,0.12);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: #fff;
+    padding: 0 24px 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+  }
+  .logo .logo-dz { color: var(--accent); font-size: 0.72rem; font-weight: 600; display: block; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
+
+  .nav { margin-top: 20px; flex: 1; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 24px;
+    color: var(--sidebar-text);
+    font-size: 0.87rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+  }
+  .nav-item:hover { color: #fff; background: var(--sidebar-active-bg); }
+  .nav-item.active { color: #fff; border-left-color: var(--accent); background: var(--sidebar-active-bg); }
+  .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+
+  .sidebar-footer {
+    padding: 20px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.78rem;
+    color: var(--sidebar-text);
+  }
+  .admin-badge {
+    display: inline-block;
+    background: rgba(26,107,220,0.3);
+    color: #7eb8ff;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  /* MAIN */
+  .main {
+    margin-left: 250px;
+    flex: 1;
+    padding: 40px 48px;
+    max-width: 950px;
+  }
+
+  .page-header { margin-bottom: 36px; }
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .page-title span { color: var(--accent); }
+  .page-sub { color: var(--muted); font-size: 0.9rem; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 10px 18px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--accent); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(26,107,220,0.04);
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  .card-desc { color: var(--muted); font-size: 0.82rem; margin-bottom: 22px; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label { font-size: 0.81rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  input, select, textarea {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(26,107,220,0.1);
+  }
+  textarea { resize: vertical; min-height: 100px; }
+
+  /* TOGGLE */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .toggle-row:first-child { padding-top: 0; }
+  .toggle-info { flex: 1; }
+  .toggle-label { font-size: 0.9rem; font-weight: 500; margin-bottom: 3px; color: var(--text); }
+  .toggle-sub { font-size: 0.78rem; color: var(--muted); }
+
+  .toggle {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #d1d9ee;
+    border-radius: 24px;
+    transition: 0.3s;
+  }
+  .slider::before {
+    content: '';
+    position: absolute;
+    height: 18px; width: 18px;
+    left: 3px; bottom: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.3s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+  .toggle input:checked + .slider { background: var(--accent); }
+  .toggle input:checked + .slider::before { transform: translateX(20px); }
+
+  /* BUTTONS */
+  .btn-row { display: flex; gap: 12px; margin-top: 24px; }
+  .btn {
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(26,107,220,0.3); }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+  .btn-ghost:hover { color: var(--text); border-color: #aab; }
+  .btn-danger { background: rgba(229,62,62,0.08); color: var(--danger); border: 1.5px solid rgba(229,62,62,0.25); }
+  .btn-danger:hover { background: rgba(229,62,62,0.15); }
+
+  /* STAT CHIPS */
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .stat-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 8px rgba(26,107,220,0.05);
+  }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.7rem; font-weight: 800; color: var(--accent); }
+  .stat-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+  /* CATEGORY LIST */
+  .cat-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .cat-tag {
+    background: var(--accent-light);
+    border: 1px solid rgba(26,107,220,0.2);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.82rem;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+  }
+  .cat-remove { color: var(--accent); cursor: pointer; opacity: 0.5; }
+  .cat-remove:hover { opacity: 1; color: var(--danger); }
+  .add-row { display: flex; gap: 10px; }
+  .add-row input { flex: 1; }
+
+  /* SECTION DIVIDER */
+  .section-divider {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin: 28px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* PAYMENT MODE CHIPS */
+  .pay-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pay-chip {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--muted);
+    background: var(--surface2);
+  }
+  .pay-chip.selected { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--accent);
+    color: #fff;
+    padding: 13px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    pointer-events: none;
+    box-shadow: 0 4px 20px rgba(26,107,220,0.35);
+    z-index: 999;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* LEGAL TEXTAREA */
+  .legal-textarea { min-height: 160px; font-size: 0.85rem; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <span class="logo-dz">ServiceLine</span>
+    ServiceLineDz
+  </div>
+  <nav class="nav">
+    <a class="nav-item" href="#"><span class="nav-icon">📊</span> Tableau de bord</a>
+    <a class="nav-item" href="#"><span class="nav-icon">👷</span> Artisans</a>
+    <a class="nav-item" href="#"><span class="nav-icon">👤</span> Clients</a>
+    <a class="nav-item" href="#"><span class="nav-icon">📋</span> Annonces</a>
+    <a class="nav-item" href="#"><span class="nav-icon">⭐</span> Avis</a>
+    <a class="nav-item" href="#"><span class="nav-icon">🚩</span> Signalements</a>
+    <a class="nav-item active" href="#"><span class="nav-icon">⚙️</span> Paramètres</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-badge">ADMIN</div>
+    <div style="color:#fff; font-weight:500; margin-top:2px;">Mohammed Admin</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="page-header">
+    <h1 class="page-title">Para<span>mètres</span></h1>
+    <p class="page-sub">Gérez la configuration complète de ServiceLineDz</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('general', this)">🏠 Général</button>
+    <button class="tab" onclick="switchTab('users', this)">👥 Utilisateurs</button>
+    <button class="tab" onclick="switchTab('categories', this)">🔧 Catégories</button>
+    <button class="tab" onclick="switchTab('paiements', this)">💳 Paiements</button>
+    <button class="tab" onclick="switchTab('annonces', this)">📋 Annonces</button>
+    <button class="tab" onclick="switchTab('signalements', this)">🚩 Signalements</button>
+    <button class="tab" onclick="switchTab('profil-artisan', this)">👷 Profil Artisan</button>
+    <button class="tab" onclick="switchTab('notifications', this)">🔔 Notifications</button>
+    <button class="tab" onclick="switchTab('securite', this)">🔐 Sécurité</button>
+    <button class="tab" onclick="switchTab('legal', this)">📄 Légal</button>
+  </div>
+
+  <!-- ═══ TAB: GÉNÉRAL ═══ -->
+  <div class="section active" id="tab-general">
+    <div class="stat-row">
+      <div class="stat-chip"><div class="stat-num">1 248</div><div class="stat-lbl">Artisans inscrits</div></div>
+      <div class="stat-chip"><div class="stat-num">5 630</div><div class="stat-lbl">Clients inscrits</div></div>
+      <div class="stat-chip"><div class="stat-num">342</div><div class="stat-lbl">Mises en relation</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🏠 Informations du site</div>
+      <div class="card-desc">Nom, description et coordonnées affichés sur la plateforme.</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nom du site</label>
+          <input type="text" value="ServiceLineDz">
+        </div>
+        <div class="form-group">
+          <label>Slogan</label>
+          <input type="text" value="Connectez-vous avec les meilleurs artisans d'Algérie">
+        </div>
+        <div class="form-group">
+          <label>Email de contact</label>
+          <input type="email" value="contact@servicelinedz.dz">
+        </div>
+        <div class="form-group">
+          <label>Téléphone support</label>
+          <input type="text" value="+213 5 55 55 55 55">
+        </div>
+        <div class="form-group full">
+          <label>Description courte</label>
+          <textarea>Plateforme de mise en relation entre artisans qualifiés et particuliers en Algérie.</textarea>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+        <button class="btn btn-ghost">Annuler</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🌍 Langue & Région</div>
+      <div class="card-desc">Paramètres de localisation de la plateforme.</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Langue par défaut</label>
+          <select>
+            <option>Français</option>
+            <option>Arabe</option>
+            <option>English</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fuseau horaire</label>
+          <select>
+            <option selected>Africa/Algiers (UTC+1)</option>
+            <option>UTC</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: UTILISATEURS ═══ -->
+  <div class="section" id="tab-users">
+    <div class="card">
+      <div class="card-title">👷 Paramètres Artisans</div>
+      <div class="card-desc">Contrôlez comment les artisans s'inscrivent et sont validés.</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Validation manuelle des artisans</div>
+          <div class="toggle-sub">L'admin doit approuver chaque nouveau profil artisan</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Vérification par email obligatoire</div>
+          <div class="toggle-sub">L'artisan doit confirmer son email avant d'accéder à la plateforme</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Autoriser les nouvelles inscriptions artisans</div>
+          <div class="toggle-sub">Désactiver pour fermer temporairement les inscriptions</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">👤 Paramètres Clients</div>
+      <div class="card-desc">Gérez les droits et options des clients.</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Inscription client libre</div>
+          <div class="toggle-sub">Les clients peuvent s'inscrire sans validation admin</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Autoriser les avis clients</div>
+          <div class="toggle-sub">Les clients peuvent noter et commenter les artisans</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Modération des avis avant publication</div>
+          <div class="toggle-sub">Chaque avis est relu par l'admin avant d'être visible</div>
+        </div>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: CATÉGORIES ═══ -->
+  <div class="section" id="tab-categories">
+    <div class="card">
+      <div class="card-title">🔧 Catégories de métiers</div>
+      <div class="card-desc">Gérez les types d'artisans disponibles sur la plateforme.</div>
+      <div class="cat-list" id="catList">
+        <div class="cat-tag">Plombier <span class="cat-remove" onclick="removeCat(this)">✕</span></div>
+        <div class="cat-tag">Électricien <span class="cat-remove" onclick="removeCat(this)">✕</span></div>
+        <div class="cat-tag">Menuisier <span class="cat-remove" onclick="removeCat(this)">✕</span></div>
+        <div class="cat-tag">Peintre <span class="cat-remove" onclick="removeCat(this)">✕</span></div>
+        <div class="cat-tag">Maçon <span class="cat-remove" onclick="removeCat(this)">✕</span></div>
+        <div class="cat-tag">Carreleur <span class="cat-remove" onclick="removeCat(this)">✕</span></div>
+        <div class="cat-tag">Serrurier <span class="cat-remove" onclick="removeCat(this)">✕</span></div>
+        <div class="cat-tag">Couvreur <span class="cat-remove" onclick="removeCat(this)">✕</span></div>
+      </div>
+      <div class="add-row">
+        <input type="text" id="newCat" placeholder="Ajouter une catégorie...">
+        <button class="btn btn-primary" onclick="addCat()">+ Ajouter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: PAIEMENTS ═══ -->
+  <div class="section" id="tab-paiements">
+    <div class="card">
+      <div class="card-title">💳 Commission plateforme</div>
+      <div class="card-desc">Définissez le pourcentage que ServiceLineDz prélève sur chaque transaction.</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Commission (%) sur chaque vente</label>
+          <input type="number" value="10" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>Commission fixe (DA) par transaction</label>
+          <input type="number" value="0" min="0">
+        </div>
+        <div class="form-group">
+          <label>Montant minimum de transaction (DA)</label>
+          <input type="number" value="500">
+        </div>
+        <div class="form-group">
+          <label>Devise de la plateforme</label>
+          <select>
+            <option selected>DZD — Dinar Algérien</option>
+            <option>EUR — Euro</option>
+            <option>USD — Dollar</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏦 Modes de paiement acceptés</div>
+      <div class="card-desc">Activez les méthodes de paiement disponibles pour les utilisateurs.</div>
+      <div class="pay-chips">
+        <div class="pay-chip selected" onclick="togglePay(this)">💵 Cash</div>
+        <div class="pay-chip selected" onclick="togglePay(this)">💳 Carte bancaire</div>
+        <div class="pay-chip selected" onclick="togglePay(this)">🏦 CCP (Algérie Poste)</div>
+        <div class="pay-chip" onclick="togglePay(this)">📱 BaridiMob</div>
+        <div class="pay-chip" onclick="togglePay(this)">🌐 Virement bancaire</div>
+        <div class="pay-chip" onclick="togglePay(this)">💻 Paiement en ligne</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⭐ Abonnement Artisans (optionnel)</div>
+      <div class="card-desc">Proposez des formules d'abonnement pour les artisans avec des avantages supplémentaires.</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Activer les abonnements artisans</div>
+          <div class="toggle-sub">Permettre aux artisans de s'abonner pour plus de visibilité</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="subToggle" onchange="toggleSub()" ><span class="slider"></span></label>
+      </div>
+      <div id="subOptions" style="display:none; margin-top:20px;">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Prix abonnement mensuel (DA)</label>
+            <input type="number" value="1500">
+          </div>
+          <div class="form-group">
+            <label>Prix abonnement annuel (DA)</label>
+            <input type="number" value="15000">
+          </div>
+          <div class="form-group full">
+            <label>Avantages de l'abonnement</label>
+            <textarea placeholder="Ex: Profil mis en avant, badge Premium, accès prioritaire aux demandes...">Profil mis en avant dans les résultats, badge Premium visible, accès prioritaire aux nouvelles demandes clients.</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: ANNONCES ═══ -->
+  <div class="section" id="tab-annonces">
+    <div class="card">
+      <div class="card-title">📋 Règles de publication</div>
+      <div class="card-desc">Contrôlez la durée et les limites des annonces et demandes.</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Durée de publication (jours)</label>
+          <input type="number" value="7" min="1" max="90">
+        </div>
+        <div class="form-group">
+          <label>Limite de demandes par client / mois</label>
+          <input type="number" value="5" min="1">
+        </div>
+        <div class="form-group">
+          <label>Nombre max de photos par annonce</label>
+          <input type="number" value="6" min="1">
+        </div>
+        <div class="form-group">
+          <label>Longueur minimum description (caractères)</label>
+          <input type="number" value="100" min="0">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">✅ Validation des annonces</div>
+      <div class="card-desc">Définissez si les annonces doivent être approuvées avant d'être publiées.</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Validation admin obligatoire</div>
+          <div class="toggle-sub">Chaque annonce est relue par l'admin avant publication</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Autoriser les annonces urgentes</div>
+          <div class="toggle-sub">Les clients peuvent marquer une demande comme urgente</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Renouvellement automatique des annonces</div>
+          <div class="toggle-sub">Republier automatiquement avant expiration si pas de réponse</div>
+        </div>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: SIGNALEMENTS ═══ -->
+  <div class="section" id="tab-signalements">
+    <div class="card">
+      <div class="card-title">🚩 Règles de suspension automatique</div>
+      <div class="card-desc">Définissez le comportement automatique quand un artisan est signalé.</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Signalements avant suspension automatique</label>
+          <input type="number" value="3" min="1">
+        </div>
+        <div class="form-group">
+          <label>Durée de suspension (jours)</label>
+          <input type="number" value="7" min="1">
+        </div>
+      </div>
+      <div class="toggle-row" style="margin-top:16px;">
+        <div class="toggle-info">
+          <div class="toggle-label">Suspension automatique après X signalements</div>
+          <div class="toggle-sub">Le compte artisan est suspendu sans intervention manuelle</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Notification admin obligatoire</div>
+          <div class="toggle-sub">L'admin reçoit un email dès qu'un artisan est signalé</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Notifier l'artisan signalé</div>
+          <div class="toggle-sub">Envoyer un avertissement à l'artisan quand il est signalé</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚠️ Actions disponibles sur signalement</div>
+      <div class="card-desc">Choisissez les actions que l'admin peut effectuer depuis le panneau de signalement.</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Suspension temporaire du compte</div>
+          <div class="toggle-sub">Bloquer l'accès artisan pendant une durée définie</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Suppression définitive du compte</div>
+          <div class="toggle-sub">Effacer complètement le profil artisan</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Ignorer le signalement</div>
+          <div class="toggle-sub">Marquer le signalement comme non valide</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: PROFIL ARTISAN ═══ -->
+  <div class="section" id="tab-profil-artisan">
+    <div class="card">
+      <div class="card-title">👷 Exigences du profil artisan</div>
+      <div class="card-desc">Définissez ce qui est obligatoire pour qu'un profil artisan soit validé et visible.</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Photo de profil obligatoire</div>
+          <div class="toggle-sub">L'artisan doit ajouter une photo avant d'être validé</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Diplôme / Certificat obligatoire</div>
+          <div class="toggle-sub">L'artisan doit uploader un justificatif de compétence</div>
+        </div>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Numéro de téléphone obligatoire</div>
+          <div class="toggle-sub">Numéro vérifié par SMS avant activation du compte</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Zone géographique obligatoire</div>
+          <div class="toggle-sub">L'artisan doit définir sa wilaya et zone d'intervention</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📸 Limites du profil</div>
+      <div class="card-desc">Contrôlez la qualité des profils artisans sur la plateforme.</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre max de photos de réalisations</label>
+          <input type="number" value="10" min="1">
+        </div>
+        <div class="form-group">
+          <label>Description minimum (caractères)</label>
+          <input type="number" value="150" min="0">
+        </div>
+        <div class="form-group">
+          <label>Nombre max de catégories par artisan</label>
+          <input type="number" value="3" min="1">
+        </div>
+        <div class="form-group">
+          <label>Taille max photo profil (Mo)</label>
+          <input type="number" value="2" min="1">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: NOTIFICATIONS ═══ -->
+  <div class="section" id="tab-notifications">
+    <div class="card">
+      <div class="card-title">📧 Notifications Email</div>
+      <div class="card-desc">Choisissez quand envoyer des emails automatiques.</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Nouvel artisan inscrit</div>
+          <div class="toggle-sub">Recevoir un email quand un artisan s'inscrit</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Nouveau signalement</div>
+          <div class="toggle-sub">Être notifié immédiatement en cas de signalement</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Email de bienvenue aux nouveaux inscrits</div>
+          <div class="toggle-sub">Envoyer automatiquement un email de bienvenue</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Rapport hebdomadaire</div>
+          <div class="toggle-sub">Recevoir un résumé des activités chaque lundi</div>
+        </div>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: SÉCURITÉ ═══ -->
+  <div class="section" id="tab-securite">
+    <div class="card">
+      <div class="card-title">🔐 Sécurité & Accès</div>
+      <div class="card-desc">Paramètres de sécurité de la plateforme.</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Double authentification admin (2FA)</div>
+          <div class="toggle-sub">Obligatoire pour tous les comptes administrateurs</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Mode maintenance</div>
+          <div class="toggle-sub">Rend le site inaccessible aux visiteurs (admin seulement)</div>
+        </div>
+        <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="form-grid" style="margin-top:20px">
+        <div class="form-group">
+          <label>Durée de session (minutes)</label>
+          <input type="number" value="60">
+        </div>
+        <div class="form-group">
+          <label>Tentatives de connexion max</label>
+          <input type="number" value="5">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+        <button class="btn btn-danger">🗑 Effacer toutes les sessions</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: LÉGAL ═══ -->
+  <div class="section" id="tab-legal">
+    <div class="card">
+      <div class="card-title">📄 Conditions d'utilisation</div>
+      <div class="card-desc">Texte affiché lors de l'inscription et accessible depuis le pied de page.</div>
+      <div class="form-group full">
+        <label>Contenu des CGU</label>
+        <textarea class="legal-textarea">En utilisant ServiceLineDz, vous acceptez les présentes conditions d'utilisation. La plateforme met en relation des artisans et des clients sans être partie prenante des contrats conclus entre eux. ServiceLineDz se réserve le droit de suspendre tout compte en cas de non-respect des règles de la plateforme...</textarea>
+      </div>
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+        <button class="btn btn-ghost">Prévisualiser</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔒 Politique de confidentialité</div>
+      <div class="card-desc">Informations sur la collecte et l'utilisation des données personnelles (RGPD / loi algérienne).</div>
+      <div class="form-group full">
+        <label>Contenu de la politique</label>
+        <textarea class="legal-textarea">ServiceLineDz collecte les données personnelles suivantes : nom, prénom, email, numéro de téléphone et localisation. Ces données sont utilisées uniquement dans le cadre du service de mise en relation et ne sont jamais revendues à des tiers. Conformément à la loi, vous pouvez demander la suppression de vos données à tout moment...</textarea>
+      </div>
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+        <button class="btn btn-ghost">Prévisualiser</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👷 Règles pour les artisans</div>
+      <div class="card-desc">Charte de bonne conduite affichée aux artisans lors de leur inscription.</div>
+      <div class="form-group full">
+        <label>Contenu des règles artisans</label>
+        <textarea class="legal-textarea">En tant qu'artisan sur ServiceLineDz, vous vous engagez à :
+• Fournir des informations exactes sur vos compétences et expériences.
+• Respecter les clients et répondre aux demandes dans les 48h.
+• Ne pas demander de paiements en dehors de la plateforme.
+• Maintenir un taux de satisfaction client supérieur à 3/5.
+• Signaler tout problème à l'équipe ServiceLineDz...</textarea>
+      </div>
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+        <button class="btn btn-ghost">Prévisualiser</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚙️ Affichage légal</div>
+      <div class="card-desc">Contrôlez où et quand les textes légaux sont affichés.</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Acceptation CGU obligatoire à l'inscription</div>
+          <div class="toggle-sub">L'utilisateur doit cocher une case avant de créer un compte</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Bandeau cookies</div>
+          <div class="toggle-sub">Afficher un bandeau de consentement aux cookies</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Lien CGU dans le pied de page</div>
+          <div class="toggle-sub">Visible sur toutes les pages du site</div>
+        </div>
+        <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="showToast()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✓ Paramètres enregistrés !</div>
+
+<script>
+  function switchTab(name, el) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function removeCat(el) { el.parentElement.remove(); }
+
+  function addCat() {
+    const inp = document.getElementById('newCat');
+    const val = inp.value.trim();
+    if (!val) return;
+    const tag = document.createElement('div');
+    tag.className = 'cat-tag';
+    tag.innerHTML = val + ' <span class="cat-remove" onclick="removeCat(this)">✕</span>';
+    document.getElementById('catList').appendChild(tag);
+    inp.value = '';
+  }
+
+  function togglePay(el) { el.classList.toggle('selected'); }
+
+  function toggleSub() {
+    const opts = document.getElementById('subOptions');
+    opts.style.display = document.getElementById('subToggle').checked ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>
