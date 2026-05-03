@@ -228,6 +228,24 @@ body {
   transform: translateY(0);
 }
 
+.message {
+  margin-top: 15px;
+  text-align: center;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  display: none;
+  font-weight: 500;
+}
+
+.message.success {
+  background: #16a34a;
+}
+
+.message.error {
+  background: #dc2626;
+}
+
 @media (max-width: 600px) {
   .container {
     padding: 2.5rem 1.5rem;
@@ -257,6 +275,7 @@ body {
   </div>
   
   <form class="form" onsubmit="register(event)">
+    <div id="message" class="message"></div>
     <div class="form-group">
       <input 
         type="text" 
@@ -308,7 +327,7 @@ body {
       </ul>
       
       <div class="checkbox-group">
-        <input type="checkbox" id="accept" required>
+        <input type="checkbox" id="accept">
         <label for="accept">Accepter</label>
       </div>
     </div>
@@ -336,12 +355,12 @@ function register(event) {
   let accept = document.getElementById("accept").checked;
 
   if (!accept) {
-    alert("Please accept the conditions.");
+    showMessage("Please accept the conditions", true);
     return;
   }
 
   if (password !== confirmPassword) {
-    alert("Passwords do not match.");
+    showMessage("Passwords do not match", true);
     return;
   }
 
@@ -357,18 +376,38 @@ function register(event) {
     })
   })
   .then(response => response.json())
-  .then(data => {
-    if (data.message) {
-      alert(data.message);
-      window.location.href = "connexion.html";
-    } else {
-      alert(data.error || "Registration failed.");
-    }
-  })
-  .catch(error => {
-    console.error("Error:", error);
-    alert("Something went wrong.");
-  });
+.then(data => {
+  if (data.message) {
+
+    // ✅ نخزنو user في localStorage
+    localStorage.setItem("user", JSON.stringify({
+      fullName: fullName,
+      contact: contact
+    }));
+
+    showMessage(data.message);
+
+    // ⏳ نخلو شوية وقت باش يبان message
+    setTimeout(() => {
+      window.location.href = "profilartisant-complet.html";
+    }, 1000);
+
+  } else {
+    showMessage((data.error || "Registration failed") + " " + (data.details || ""), true);
+  }
+})
+}
+
+function showMessage(text, isError = false) {
+  const msg = document.getElementById("message");
+  msg.style.display = "block";
+  msg.textContent = text;
+
+  msg.className = "message " + (isError ? "error" : "success");
+
+  setTimeout(() => {
+    msg.style.display = "none";
+  }, 3000);
 }
 </script>
 

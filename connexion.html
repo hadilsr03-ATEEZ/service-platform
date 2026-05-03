@@ -180,18 +180,7 @@ body {
   transform: translateY(0);
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .container {
-    padding: 2.5rem 1.5rem;
-  }
-  
-  .back-button {
-    top: 1.5rem;
-    left: 1.5rem;
-  }
-
-  .message {
+.message {
   position: fixed;
   top: 20px;
   left: 50%;
@@ -204,6 +193,17 @@ body {
   z-index: 999;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .back-button {
+    top: 1.5rem;
+    left: 1.5rem;
+  }
 }
 </style>
 </head>
@@ -250,6 +250,7 @@ body {
       Se-Connecter
     </button>
   </form>
+  <div id="message" class="message"></div>
     
 </div>
 
@@ -293,12 +294,12 @@ function login(event) {
     return JSON.parse(text);
   })
   .then(data => {
-    if (data.message) {
+    if (data.success) {
       localStorage.setItem("user", JSON.stringify(data.user));
       showMessage("Connexion réussie");
 
       setTimeout(() => {
-        window.location.href = "profil.html";
+        window.location.href = "profilss.html";
       }, 1500);
     } else {
       showMessage(data.error || "Login failed", true);
